@@ -26,7 +26,7 @@ jobs:
           onlyNewer: true
           settings: 'sftp:auto-confirm=yes'
           # Mirror command options
-          localDir: './main.py'
-          reverse: true
+          localDir: '.'
+          reverse: false
           ignoreFile: '.lftp_ignore'
           options: '--verbose'
