@@ -84,8 +84,8 @@ async def on_message(message):
     if message.content == 'git':
         await message.channel.send('working!')
         
-    if message.content == 'newnew':
-        await message.channel.send('commit works!') 
+    if message.content == 'ftp':
+        await message.channel.send('ftp github worked!') 
         
     if message.content == 'thicc me':
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
