@@ -84,7 +84,7 @@ async def on_message(message):
     if message.content == 'git':
         await message.channel.send('working!')
         
-    if message.content == 'commit':
+    if message.content == 'newnew':
         await message.channel.send('commit works!') 
         
     if message.content == 'thicc me':
