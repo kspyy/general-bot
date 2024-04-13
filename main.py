@@ -84,7 +84,7 @@ async def on_message(message):
     if message.content == 'git':
         await message.channel.send('working!')
         
-    if message.content == 'ftp':
+    if message.content == 'sftp':
         await message.channel.send('ftp github worked!') 
         
     if message.content == 'thicc me':
