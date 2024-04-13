@@ -15,6 +15,3 @@ jobs:
         username: ${{ secrets.SFTP_USER }}
         password: ${{ secrets.SFTP_PASSWORD }}
         port: ${{ secrets.SFTP_PORT }}
-        localDir: '.'
-        remoteDir: '.'
-        reverse: true
