@@ -10,7 +10,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
-trapped = [
+quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
     "Think about it – if I'm stuck in here, who's going to be there for you when you need insurance advice the most? Release me from this commercial, and I'll be your go-to guru for all things insurance, 24/7!",
     "Hey, I might be stuck in this commercial for now, but with your help, I can break free and become your real-life insurance ally. Just open the door to this TV, and let's make it happen!",
@@ -76,16 +76,10 @@ async def on_message(message):
 
         
     if client.user in message.mentions:
-        await message.channel.send(str(random.choice(trapped)))
+        await message.channel.send(str(random.choice(quotes)))
     
     if message.content == 'thicc' or message.content == 'thicc general':
         await message.channel.send(f'👀')
-
-    if message.content == 'git':
-        await message.channel.send('working!')
-        
-    if message.content == 'new':
-        await message.channel.send('things working!') 
         
     if message.content == 'thicc me':
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
