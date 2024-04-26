@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 checkin = "2024-08-10" 
 checkout = "2024-08-19"
-location = "munich".capitalize()
+location = "seattle".capitalize()
 bedrooms = "1" or "1"
 adults = "3" or "2" 
 guest_favorite = "true"
