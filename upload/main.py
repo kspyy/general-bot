@@ -9,8 +9,8 @@ from bs4 import BeautifulSoup
 checkin = "2024-08-10" 
 checkout = "2024-08-19"
 location = "munich".capitalize()
-bedrooms = "" or "1"
-adults = "" or "2" 
+bedrooms = "1" or "1"
+adults = "3" or "2" 
 guest_favorite = "true"
 room_type_apt = "" or "room_types%5B%5D=Entire%20home%2Fapt"
 base_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}&guest_favorite={guest_favorite}&{room_type_apt}&min_bedrooms={bedrooms}"
