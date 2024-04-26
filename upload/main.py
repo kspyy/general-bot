@@ -47,7 +47,7 @@ def getListingData():
             listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text'] + " | " +  "https://www.airbnb.com/rooms/"+item['listing']['id']
         except:
             listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text']
-    print(listing)
+    return listing
 
 
 quotes = [
