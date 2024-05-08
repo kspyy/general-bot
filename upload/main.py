@@ -50,7 +50,7 @@ def getListingData():
     return listing
 
 return_listing_string = getListingData()
-output = str(code_blocked_listing)
+output = str(return_listing_string)
 code_blocked_listing = f"```{output}```"
 
 
