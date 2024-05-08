@@ -53,6 +53,10 @@ def getListingData():
             listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text']
     return listing
 
+return_listing_string = getListingData()
+output = str(code_blocked_listing)
+code_blocked_listing = f"```{output}```"
+
 
 quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
