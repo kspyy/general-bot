@@ -14,7 +14,10 @@ adults = "3" or "2"
 guest_favorite = "true"
 room_type_apt = "" or "room_types%5B%5D=Entire%20home%2Fapt"
 base_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}&guest_favorite={guest_favorite}&{room_type_apt}&min_bedrooms={bedrooms}"
-code_blocked_listing = ''.join(('```',getListingData(),'```'))
+
+return_listing_string = getListingData()
+output = str(code_blocked_listing)
+code_blocked_listing = f"```{output}```"
 
 intents = discord.Intents.default()
 intents.message_content = True
