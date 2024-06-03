@@ -4,54 +4,54 @@ import json
 import requests
 import random
 import os
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
-checkin = "2024-08-10" 
-checkout = "2024-08-19"
-location = "seattle".capitalize()
-bedrooms = "1" or "1"
-adults = "3" or "2" 
-guest_favorite = "true"
-room_type_apt = "" or "room_types%5B%5D=Entire%20home%2Fapt"
-base_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}&guest_favorite={guest_favorite}&{room_type_apt}&min_bedrooms={bedrooms}"
+# checkin = "2024-08-10" 
+# checkout = "2024-08-19"
+# location = "seattle".capitalize()
+# bedrooms = "1" or "1"
+# adults = "3" or "2" 
+# guest_favorite = "true"
+# room_type_apt = "" or "room_types%5B%5D=Entire%20home%2Fapt"
+# base_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}&guest_favorite={guest_favorite}&{room_type_apt}&min_bedrooms={bedrooms}"
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
-# build initial search
-def queryBuilder():
-    global location
-    if ' ' in location:
-        location = location.replace(" ", "-" ).title()
-        spaced_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}"
-        # print(spaced_query)
-        return spaced_query
-    else:
-        # print(base_query)
-        return base_query
+# # build initial search
+# def queryBuilder():
+#     global location
+#     if ' ' in location:
+#         location = location.replace(" ", "-" ).title()
+#         spaced_query = f"https://www.airbnb.com/s/{location}/homes?query={location}&checkin={checkin}&checkout={checkout}&adults={adults}"
+#         # print(spaced_query)
+#         return spaced_query
+#     else:
+#         # print(base_query)
+#         return base_query
     
 
-# fetch listing data
-def getListingData():
-    completed_url = queryBuilder()
-    r = requests.get(completed_url) # feed in querybuilder url
-    soup = BeautifulSoup(r.content, 'html.parser')
-    script = soup.find_all('script')[39].text.strip() # main results
-    data = json.loads(script)
+# # fetch listing data
+# def getListingData():
+#     completed_url = queryBuilder()
+#     r = requests.get(completed_url) # feed in querybuilder url
+#     soup = BeautifulSoup(r.content, 'html.parser')
+#     script = soup.find_all('script')[39].text.strip() # main results
+#     data = json.loads(script)
 
-    for item in data['root > core-guest-spa'][1][1]['niobeMinimalClientData'][1][1]['data']['presentation']['staysSearch']['results']['searchResults']:
-        listing = ""
-        try:
-            listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text'] + " | " +  "https://www.airbnb.com/rooms/"+item['listing']['id']
-        except:
-            listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text']
-        return listing
+#     for item in data['root > core-guest-spa'][1][1]['niobeMinimalClientData'][1][1]['data']['presentation']['staysSearch']['results']['searchResults']:
+#         listing = ""
+#         try:
+#             listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text'] + " | " +  "https://www.airbnb.com/rooms/"+item['listing']['id']
+#         except:
+#             listing += item['listing']['title'] + " | " + item['listing']['avgRatingA11yLabel'] + " |  " + item['pricingQuote']['structuredStayDisplayPrice']['secondaryLine']['accessibilityLabel'] + " |  " + item['listing']['formattedBadges'][0]['text']
+#         return listing
 
-return_listing_string = getListingData()
-output = str(return_listing_string)
-code_blocked_listing = f"```{output}```"
+# return_listing_string = getListingData()
+# output = str(return_listing_string)
+# code_blocked_listing = f"```{output}```"
 
 
 quotes = [
