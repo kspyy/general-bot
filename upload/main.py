@@ -53,18 +53,18 @@ quotes = [
     "The horror, the horror",
 ]
 
-# def birthdayChecker():
-#     birthdays = {
-#         "Drew": "23-07-1990",
-#         # "Matt": "21-08-1989"
-#     }
+def birthdayChecker():
+    birthdays = {
+        "Drew": "23-07-1990",
+        # "Matt": "21-08-1989"
+    }
 
-#     for n,b in birthdays.items():
-#         birth = datetime.strptime(b, "%d-%m-%Y").date()
-#         today = date.today()
-#         if birth.day == today.day and birth.month == today.month:
-#             age = today.year - birth.year
-#             print(f"It's {n}'s birthday! You're", age,"! : )")
+    for n,b in birthdays.items():
+        birth = datetime.strptime(b, "%d-%m-%Y").date()
+        today = date.today()
+        if birth.day == today.day and birth.month == today.month:
+            age = today.year - birth.year
+            print(f"It's {n}'s birthday! You're", age,"! : )")
 
 #logon
 @client.event
@@ -75,23 +75,9 @@ async def on_ready():
 @client.event
 async def on_message(message):
     
-    def birthdayChecker():
-        birthdays = {
-            "Drew": "23-07-1990",
-            # "Matt": "21-08-1989"
-        }
-    
-        for n,b in birthdays.items():
-            birth = datetime.strptime(b, "%d-%m-%Y").date()
-            today = date.today()
-            if birth.day == today.day and birth.month == today.month:
-                age = today.year - birth.year
-                print(f"It's {n}'s birthday! You're", age,"! : )")
-    
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
         return
-
         
     if client.user in message.mentions:
         await message.channel.send(str(random.choice(quotes)))
@@ -102,8 +88,7 @@ async def on_message(message):
     if message.content == 'thicc me':
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
-    if message.content == 'birth':
-        result = birthdayChecker()
-        await message.channel.send(result)
+    if message.content == 'bir':
+        await message.channel.send(birthdayChecker())
 
 client.run(token)
