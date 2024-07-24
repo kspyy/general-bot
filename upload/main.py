@@ -53,6 +53,28 @@ quotes = [
     "The horror, the horror",
 ]
 
+# def birthdayChecker():
+#     birthdays = {
+#         "Drew": "23-07-1990",
+#         # "Matt": "21-08-1989"
+#     }
+
+#     for n,b in birthdays.items():
+#         birth = datetime.strptime(b, "%d-%m-%Y").date()
+#         today = date.today()
+#         if birth.day == today.day and birth.month == today.month:
+#             age = today.year - birth.year
+#             print(f"It's {n}'s birthday! You're", age,"! : )")
+
+#logon
+@client.event
+async def on_ready():
+    print('We have logged in as {0.user}'.format(client))
+
+#listen and reply
+@client.event
+async def on_message(message):
+    
 def birthdayChecker():
     birthdays = {
         "Drew": "23-07-1990",
@@ -65,26 +87,6 @@ def birthdayChecker():
         if birth.day == today.day and birth.month == today.month:
             age = today.year - birth.year
             print(f"It's {n}'s birthday! You're", age,"! : )")
-
-#logon
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-#listen and reply
-@client.event
-async def on_message(message):
-    
-    # https://github.com/fisenkodv/dictum
-    # API to get access to the collection of the most inspiring expressions of mankind
-    # def getQuote():
-    #     quotes = ""
-    #     response = requests.get('https://api.fisenko.net/v1/quotes/en/random')
-    #     data = json.loads(response.content)
-    #     quotes += (data['text'])
-    #     return quotes
-    
-    # quote = getQuote()
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
