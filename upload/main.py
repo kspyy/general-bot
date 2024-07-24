@@ -4,6 +4,9 @@ import json
 import requests
 import random
 import os
+from datetime import datetime
+from datetime import date
+
 
 intents = discord.Intents.default()
 intents.message_content = True
