@@ -63,8 +63,8 @@ def birthdayChecker():
         birth = datetime.strptime(b, "%d-%m-%Y").date()
         today = date.today()
         if birth.day == today.day and birth.month == today.month:
-            age = today.year - birth.year
-            print(f"It's {n}'s birthday! You're", age,"! : )")
+            a = f"It's {n}'s birthday! You're", age,"! :)"
+            print(str(a))
 
 #logon
 @client.event
