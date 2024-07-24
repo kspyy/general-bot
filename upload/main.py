@@ -75,18 +75,18 @@ async def on_ready():
 @client.event
 async def on_message(message):
     
-def birthdayChecker():
-    birthdays = {
-        "Drew": "23-07-1990",
-        # "Matt": "21-08-1989"
-    }
-
-    for n,b in birthdays.items():
-        birth = datetime.strptime(b, "%d-%m-%Y").date()
-        today = date.today()
-        if birth.day == today.day and birth.month == today.month:
-            age = today.year - birth.year
-            print(f"It's {n}'s birthday! You're", age,"! : )")
+    def birthdayChecker():
+        birthdays = {
+            "Drew": "23-07-1990",
+            # "Matt": "21-08-1989"
+        }
+    
+        for n,b in birthdays.items():
+            birth = datetime.strptime(b, "%d-%m-%Y").date()
+            today = date.today()
+            if birth.day == today.day and birth.month == today.month:
+                age = today.year - birth.year
+                print(f"It's {n}'s birthday! You're", age,"! : )")
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
