@@ -65,11 +65,6 @@ def birthdayChecker():
             age = today.year - birth.year
             all += str(f"It's {n}'s {age}th birthday!")
             print(all)
-def hello():
-    print("hello!")
-
-def outfunc():
-    print("i'm out da func")
 
 #logon
 @client.event
@@ -80,8 +75,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-    def infunc():
-        print("i'm in da func")
+
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
@@ -96,12 +90,7 @@ async def on_message(message):
     if message.content == 'thicc me':
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
-    if message.content == 'bir':
-        await message.channel.send(birthdayChecker())
-        
-    if message.content == 'inda':
-        await message.channel.send(infunc())
-        
-    if message.content == 'outa':
-        await message.channel.send(outfunc())
+    if message.content == 'test':
+        await message.channel.send("testing!")
+
 client.run(token)
