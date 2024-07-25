@@ -50,7 +50,7 @@ quotes = [
     "The horror, the horror",
 ]
 
-def birthday_checker():
+async def birthday_checker():
     birthdays = {
         "Drew": "24-07-1990",
         # "Matt": "24-07-1989"
