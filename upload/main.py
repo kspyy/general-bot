@@ -50,21 +50,24 @@ quotes = [
     "The horror, the horror",
 ]
 
-def birthdayChecker():
+def birthday_checker():
     birthdays = {
         "Drew": "24-07-1990",
-        # "Matt": "21-08-1989"
+        # "Matt": "24-07-1989"
     }
 
-    for n,b in birthdays.items():
+    today = date.today()
+    found_birthday = False
+    
+    for n, b in birthdays.items():
         birth = datetime.strptime(b, "%d-%m-%Y").date()
-        today = date.today()
-        
+       
         if birth.day == today.day and birth.month == today.month:
-            all = ""
+            found_birthday = True
             age = today.year - birth.year
-            all += str(f"It's {n}'s {age}th birthday!")
-            return all 
+            message = f"It's {n}'s {age}th birthday!"
+            print(message)
+    
 
 def yo():
     return "yo!!"
