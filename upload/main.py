@@ -89,6 +89,6 @@ async def on_message(message):
 
     if message.content == 'bir':
         b = birthday_checker()
-        await message.channel.send(str(b))
+        await message.channel.send(print(b))
 
 client.run(token)
