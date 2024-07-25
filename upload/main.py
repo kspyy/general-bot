@@ -88,6 +88,7 @@ async def on_message(message):
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
     if message.content == 'bir':
-        await message.channel.send(birthday_checker)
+        b = birthday_checker()
+        await message.channel.send(b)
 
 client.run(token)
