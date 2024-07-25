@@ -67,7 +67,7 @@ def birthdayChecker():
             print(all)
 
 def yo():
-    print("yoooo")
+    return "yo!!"
 
 #logon
 @client.event
@@ -91,7 +91,8 @@ async def on_message(message):
     if message.content == 'thicc me':
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
-    if message.content == 'test':
-        await message.channel.send(yo())
+    if message.content == 'bir':
+        response = yo()
+        await message.channel.send(response)
 
 client.run(token)
