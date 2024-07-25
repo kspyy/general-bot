@@ -75,8 +75,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-def yo():
-    print("yoooo")
+    def yo():
+        print("yoooo")
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
