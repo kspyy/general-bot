@@ -52,16 +52,19 @@ quotes = [
 
 def birthdayChecker():
     birthdays = {
-        "Drew": "23-07-1990",
+        "Drew": "24-07-1990",
         # "Matt": "21-08-1989"
     }
 
     for n,b in birthdays.items():
         birth = datetime.strptime(b, "%d-%m-%Y").date()
         today = date.today()
+        
         if birth.day == today.day and birth.month == today.month:
-            a = f"It's {n}'s birthday! You're", age,"! :)"
-            print(str(a))
+            all = ""
+            age = today.year - birth.year
+            all += str(f"It's {n}'s {age}th birthday!")
+            print(all)
 
 #logon
 @client.event
