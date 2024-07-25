@@ -56,21 +56,14 @@ def birthday_checker():
         # "Matt": "24-07-1989"
     }
 
-    today = date.today()
-    found_birthday = False
-    
     for n, b in birthdays.items():
+        today = date.today()
         birth = datetime.strptime(b, "%d-%m-%Y").date()
        
         if birth.day == today.day and birth.month == today.month:
-            found_birthday = True
             age = today.year - birth.year
             message = f"It's {n}'s {age}th birthday!"
             print(message)
-    
-
-def yo():
-    return "yo!!"
 
 #logon
 @client.event
