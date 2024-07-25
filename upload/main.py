@@ -93,5 +93,6 @@ async def on_message(message):
     if message.content == 'bir':
         await message.channel.send(birthdayChecker())
         
-
+    if message.content == 'hellotest':
+        await message.channel.send(hello())
 client.run(token)
