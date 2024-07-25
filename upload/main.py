@@ -91,6 +91,6 @@ async def on_message(message):
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
     if message.content == 'test':
-        await message.channel.send("testing!")
+        await message.channel.send('testing!')
 
 client.run(token)
