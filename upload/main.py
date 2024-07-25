@@ -63,7 +63,7 @@ def birthday_checker():
         if birth.day == today.day and birth.month == today.month:
             age = today.year - birth.year
             message = f"It's {n}'s {age}th birthday!"
-            print(message)
+            return message
 
 #logon
 @client.event
