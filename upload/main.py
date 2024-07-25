@@ -64,7 +64,7 @@ def birthdayChecker():
             all = ""
             age = today.year - birth.year
             all += str(f"It's {n}'s {age}th birthday!")
-            return all
+            print(all)
 
 #logon
 @client.event
@@ -89,8 +89,7 @@ async def on_message(message):
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
     if message.content == 'bir':
-        response = birthdayChecker()
-        messageToSend = str(response[0])
-        await message.channel.send(messageToSend)
+        await message.channel.send(birthdayChecker())
+        
 
 client.run(token)
