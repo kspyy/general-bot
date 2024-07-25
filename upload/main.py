@@ -75,7 +75,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-
+def yo():
+    print("yoooo")
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
@@ -91,6 +92,6 @@ async def on_message(message):
         await message.channel.send('https://e7.pngegg.com/pngimages/194/801/png-clipart-shaquille-o-neal-the-general-vehicle-insurance-car-car.png')
 
     if message.content == 'test':
-        await message.channel.send('testing!')
+        await message.channel.send(yo())
 
 client.run(token)
