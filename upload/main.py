@@ -64,7 +64,7 @@ def birthdayChecker():
             all = ""
             age = today.year - birth.year
             all += str(f"It's {n}'s {age}th birthday!")
-            print(all)
+            return all
 
 #logon
 @client.event
