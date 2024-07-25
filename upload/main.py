@@ -68,6 +68,9 @@ def birthdayChecker():
 def hello():
     print("hello!")
 
+def outfunc():
+    print("i'm out da func")
+
 #logon
 @client.event
 async def on_ready():
@@ -76,6 +79,9 @@ async def on_ready():
 #listen and reply
 @client.event
 async def on_message(message):
+
+    def infunc():
+        print("i'm in da func")
     
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
@@ -93,6 +99,9 @@ async def on_message(message):
     if message.content == 'bir':
         await message.channel.send(birthdayChecker())
         
-    if message.content == 'hellotest':
-        await message.channel.send(hello())
+    if message.content == 'inda':
+        await message.channel.send(infunc())
+        
+    if message.content == 'outa':
+        await message.channel.send(outfunc())
 client.run(token)
