@@ -50,6 +50,10 @@ quotes = [
     "The horror, the horror",
 ]
 
+infamous_mode - [
+    "The general wants to get you a great insurance rate while also making America great again!",
+]
+
 def birthday_checker():
     birthdays = {
         "Drew": "24-07-1990",
@@ -77,9 +81,12 @@ async def on_message(message):
     # Make sure the Bot doesn't respond to it's own messages
     if message.author == client.user: 
         return
-        
+
     if client.user in message.mentions:
-        await message.channel.send(str(random.choice(quotes)))
+        await message.channel.send(str(random.choice(infamous)))
+    
+    # if client.user in message.mentions:
+    #     await message.channel.send(str(random.choice(quotes)))
     
     if message.content == 'thicc' or message.content == 'thicc general':
         await message.channel.send(f'👀')
