@@ -50,7 +50,7 @@ quotes = [
     "The horror, the horror",
 ]
 
-infamous_mode - [
+unstoppable = [
     "The general wants to get you a great insurance rate while also making America great again!",
 ]
 
@@ -83,7 +83,7 @@ async def on_message(message):
         return
 
     if client.user in message.mentions:
-        await message.channel.send(str(random.choice(infamous)))
+        await message.channel.send(str(random.choice(unstoppable)))
     
     # if client.user in message.mentions:
     #     await message.channel.send(str(random.choice(quotes)))
