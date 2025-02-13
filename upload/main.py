@@ -27,13 +27,16 @@ result: Result = get_flights(
 
 flight = result.flights
 
-def deltaCheck():
+    embed = discord.Embed(title="Delta Flights", color=0x003399)
+    
     for f in flight:
         if f.name == "Delta":
-            print(f.name,
-                f.price,
-                f.departure,
-                f.arrival)
+            embed.add_field(
+                name=f"Flight to {f.arrival}",
+                value=f"Price: ${f.price}\nDeparture: {f.departure}\nArrival: {f.arrival}",
+                inline=False
+            )
+    return embed
 
 quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
@@ -124,10 +127,7 @@ async def on_message(message):
         await message.channel.send(bdays)
 
     if message.content == 'eur flights':
-        result = deltaCheck()
-        if result:
-            await message.channel.send(result)
-        else:
-            await message.channel.send("No results to display") 
+        embed = deltaCheck()
+        await message.channel.send(embed=embed)
 
 client.run(token)
