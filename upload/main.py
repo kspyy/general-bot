@@ -123,7 +123,11 @@ async def on_message(message):
         bdays = birthday_checker()
         await message.channel.send(bdays)
 
-    if message.content == 'flights':
-        await message.channel.send(deltaCheck())
+    if message.content == 'eur flights':
+        result = deltaCheck()
+        if result:
+            await message.channel.send(result)
+        else:
+            await message.channel.send("No results to display") 
 
 client.run(token)
