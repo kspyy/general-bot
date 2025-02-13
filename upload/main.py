@@ -16,9 +16,19 @@ def deltaCheck(flight_data):
     
     for f in flight_data:
         if f.name == "Delta":
+            # Format the title to show route instead of just arrival
+            name = f"Delta Flight: {f.departure} → {f.arrival}"
+            
+            # Format the details in a cleaner way
+            value = (
+                f"💰 Price: ${f.price}\n"
+                f"🛫 Departure: {f.departure}\n"
+                f"🛬 Arrival: {f.arrival}"
+            )
+            
             embed.add_field(
-                name=f"Flight to {f.arrival}",
-                value=f"Price: ${f.price}\nDeparture: {f.departure}\nArrival: {f.arrival}",
+                name=name,
+                value=value,
                 inline=False
             )
     return embed
