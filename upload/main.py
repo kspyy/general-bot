@@ -11,26 +11,40 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-def deltaCheck(flight_data):
-    embed = discord.Embed(title="Delta Flights", color=0x003399)
+def check_flights(flight_data):
+    embed = discord.Embed(title="Flight Search Results", color=0x003399)
     
-    for f in flight_data:
-        if f.name == "Delta":
-            # Format the title to show route instead of just arrival
-            name = f"Delta Flight: {f.departure} → {f.arrival}"
-            
-            # Format the details in a cleaner way
-            value = (
-                f"💰 Price: ${f.price}\n"
-                f"🛫 Departure: {f.departure}\n"
-                f"🛬 Arrival: {f.arrival}"
-            )
-            
-            embed.add_field(
-                name=name,
-                value=value,
-                inline=False
-            )
+    # Get unique airlines from the data
+    airlines = set(f.name for f in flight_data)
+    
+    for airline in airlines:
+        # For each airline, find all their flights
+        airline_flights = [f for f in flight_data if f.name == airline]
+        
+        if airline_flights:  # Only add to embed if airline has flights
+            for f in airline_flights:
+                name = f"{f.name} Flight: {f.departure} → {f.arrival}"
+                
+                value = (
+                    f"💰 Price: ${f.price}\n"
+                    f"🛫 Departure: {f.departure}\n"
+                    f"🛬 Arrival: {f.arrival}"
+                )
+                
+                embed.add_field(
+                    name=name,
+                    value=value,
+                    inline=False
+                )
+    
+    # If no flights found, add a field saying so
+    if len(embed.fields) == 0:
+        embed.add_field(
+            name="No Flights Found",
+            value="No flights found for this route.",
+            inline=False
+        )
+    
     return embed
 
 async def search_flights(message):
