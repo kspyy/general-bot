@@ -99,7 +99,7 @@ Parameters:
             fetch_mode="fallback",
         )
         
-        embed = deltaCheck(result.flights)
+        embed = check_flights(result.flights)
         await message.channel.send(embed=embed)
         
     except Exception as e:
