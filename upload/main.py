@@ -11,40 +11,26 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-def check_flights(flight_data):
-    embed = discord.Embed(title="Flight Search Results", color=0x003399)
+def deltaCheck(flight_data):
+    embed = discord.Embed(title="Delta Flights", color=0x003399)
     
-    # Get unique airlines from the data
-    airlines = set(f.name for f in flight_data)
-    
-    for airline in airlines:
-        # For each airline, find all their flights
-        airline_flights = [f for f in flight_data if f.name == airline]
-        
-        if airline_flights:  # Only add to embed if airline has flights
-            for f in airline_flights:
-                name = f"{f.name} Flight: {f.departure} → {f.arrival}"
-                
-                value = (
-                    f"💰 Price: ${f.price}\n"
-                    f"🛫 Departure: {f.departure}\n"
-                    f"🛬 Arrival: {f.arrival}"
-                )
-                
-                embed.add_field(
-                    name=name,
-                    value=value,
-                    inline=False
-                )
-    
-    # If no flights found, add a field saying so
-    if len(embed.fields) == 0:
-        embed.add_field(
-            name="No Flights Found",
-            value="No flights found for this route.",
-            inline=False
-        )
-    
+    for f in flight_data:
+        if f.name == "Delta":
+            # Format the title to show route instead of just arrival
+            name = f"Delta Flight: {f.departure} → {f.arrival}"
+            
+            # Format the details in a cleaner way
+            value = (
+                f"💰 Price: ${f.price}\n"
+                f"🛫 Departure: {f.departure}\n"
+                f"🛬 Arrival: {f.arrival}"
+            )
+            
+            embed.add_field(
+                name=name,
+                value=value,
+                inline=False
+            )
     return embed
 
 async def search_flights(message):
@@ -99,7 +85,7 @@ Parameters:
             fetch_mode="fallback",
         )
         
-        embed = check_flights(result.flights)
+        embed = deltaCheck(result.flights)
         await message.channel.send(embed=embed)
         
     except Exception as e:
@@ -206,6 +192,6 @@ async def on_message(message):
             passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
             fetch_mode="fallback",
         )
-        embed = check_flights(result.flights)
+        embed = deltaCheck(result.flights)
         await message.channel.send(embed=embed)
 client.run(token)
