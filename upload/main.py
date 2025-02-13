@@ -11,26 +11,10 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-depart_date = "2025-04-2"
-depart_airport = "SNA"
-arrive_airport = "MAD"
-
-result: Result = get_flights(
-    flight_data=[
-        FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
-    ],
-    trip="one-way",
-    seat="economy",
-    passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
-    fetch_mode="fallback",
-)
-
-flight = result.flights
-
-def deltaCheck():
+def deltaCheck(flight_data):
     embed = discord.Embed(title="Delta Flights", color=0x003399)
     
-    for f in flight:
+    for f in flight_data:
         if f.name == "Delta":
             embed.add_field(
                 name=f"Flight to {f.arrival}",
@@ -38,6 +22,64 @@ def deltaCheck():
                 inline=False
             )
     return embed
+
+async def search_flights(message):
+    try:
+        parts = message.content.split()
+        
+        if len(parts) != 4:
+            usage = """
+Please provide all required information:
+
+!flights [from] [to] [date]
+
+Examples:
+- !flights SNA MAD 2025-04-02  (Santa Ana to Madrid)
+- !flights LAX CDG 2025-05-15  (Los Angeles to Paris)
+
+Parameters:
+[from] - Departure airport code (3 letters)
+[to]   - Arrival airport code (3 letters)
+[date] - Date in YYYY-MM-DD format
+"""
+            await message.channel.send(usage)
+            return
+
+        depart_airport = parts[1].upper()
+        arrive_airport = parts[2].upper()
+        depart_date = parts[3]
+        
+        # Validate airport codes
+        if not (len(depart_airport) == 3 and len(arrive_airport) == 3):
+            await message.channel.send("Airport codes must be 3 letters (e.g., SNA, MAD)")
+            return
+            
+        # Validate date format
+        try:
+            datetime.strptime(depart_date, '%Y-%m-%d')
+        except ValueError:
+            await message.channel.send("Date must be in YYYY-MM-DD format (e.g., 2025-04-02)")
+            return
+        
+        # Let user know we're processing
+        await message.channel.send("Searching for flights...")
+        
+        # Get flights with user parameters
+        result: Result = get_flights(
+            flight_data=[
+                FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
+            ],
+            trip="one-way",
+            seat="economy",
+            passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
+            fetch_mode="fallback",
+        )
+        
+        embed = deltaCheck(result.flights)
+        await message.channel.send(embed=embed)
+        
+    except Exception as e:
+        await message.channel.send(f"An error occurred: {str(e)}")
 
 quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
@@ -127,8 +169,19 @@ async def on_message(message):
         bdays = birthday_checker()
         await message.channel.send(bdays)
 
+    if message.content.startswith('!flights'):
+        await search_flights(message)
+    
     if message.content == 'eur flights':
-        embed = deltaCheck()
+        result: Result = get_flights(
+            flight_data=[
+                FlightData(date="2025-04-2", from_airport="SNA", to_airport="MAD")
+            ],
+            trip="one-way",
+            seat="economy",
+            passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
+            fetch_mode="fallback",
+        )
+        embed = deltaCheck(result.flights)
         await message.channel.send(embed=embed)
-
 client.run(token)
