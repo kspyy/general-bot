@@ -82,11 +82,11 @@ async def on_message(message):
     if message.author == client.user: 
         return
 
-    if client.user in message.mentions:
-        await message.channel.send(str(random.choice(unstoppable)))
-    
     # if client.user in message.mentions:
-    #     await message.channel.send(str(random.choice(quotes)))
+    #     await message.channel.send(str(random.choice(unstoppable)))
+    
+    if client.user in message.mentions:
+        await message.channel.send(str(random.choice(quotes)))
     
     if message.content == 'thicc' or message.content == 'thicc general':
         await message.channel.send(f'👀')
