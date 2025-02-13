@@ -206,6 +206,6 @@ async def on_message(message):
             passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
             fetch_mode="fallback",
         )
-        embed = deltaCheck(result.flights)
+        embed = check_flights(result.flights)
         await message.channel.send(embed=embed)
 client.run(token)
