@@ -27,6 +27,7 @@ result: Result = get_flights(
 
 flight = result.flights
 
+def deltaCheck():
     embed = discord.Embed(title="Delta Flights", color=0x003399)
     
     for f in flight:
