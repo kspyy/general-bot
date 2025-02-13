@@ -3,12 +3,37 @@ from discord.ext import commands
 import json, requests, random, os
 from datetime import datetime
 from datetime import date
-
+from fast_flights import FlightData, Passengers, Result, get_flights
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
+
+
+depart_date = "2025-04-2"
+depart_airport = "SNA"
+arrive_airport = "MAD"
+
+result: Result = get_flights(
+    flight_data=[
+        FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
+    ],
+    trip="one-way",
+    seat="economy",
+    passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
+    fetch_mode="fallback",
+)
+
+flight = result.flights
+
+def deltaCheck():
+    for f in flight:
+        if f.name == "Delta":
+            print(f.name,
+                f.price,
+                f.departure,
+                f.arrival)
 
 quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
@@ -97,5 +122,8 @@ async def on_message(message):
     if message.content == 'bir':
         bdays = birthday_checker()
         await message.channel.send(bdays)
+
+    if message.content == 'flights':
+        await message.channel.send(deltaCheck())
 
 client.run(token)
