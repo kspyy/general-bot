@@ -32,7 +32,7 @@ def check_flights(flight_data):
                 
                 name = f"{f.name} Flight: {f.departure} → {f.arrival}"
                 value = (
-                    f"💰 Price: {f.price}\n"
+                    f"💰 Price: ${f.price}\n"
                     f"🛫 Departure: {f.departure}\n"
                     f"🛬 Arrival: {f.arrival}"
                 )
