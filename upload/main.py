@@ -21,7 +21,7 @@ def deltaCheck(flight_data):
             
             # Format the details in a cleaner way
             value = (
-                f"💰 Price: ${f.price}\n"
+                f"💰 Price: {f.price}\n"
                 f"🛫 Departure: {f.departure}\n"
                 f"🛬 Arrival: {f.arrival}"
             )
