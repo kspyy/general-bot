@@ -11,64 +11,70 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-def check_flights(flight_data):
-    embeds = []
-    current_embed = discord.Embed(title="Flight Search Results", color=0x003399)
-    field_count = 0
+def deltaCheck(flight_data):
+    embed = discord.Embed(title="Delta Flights", color=0x003399)
     
-    # Get unique airlines from the data
-    airlines = set(f.name for f in flight_data)
-    
-    for airline in airlines:
-        airline_flights = [f for f in flight_data if f.name == airline]
-        
-        if airline_flights:
-            for f in airline_flights:
-                # If current embed is getting full, create a new one
-                if field_count >= 25:  # Discord's limit is 25 fields per embed
-                    embeds.append(current_embed)
-                    current_embed = discord.Embed(title="Flight Search Results (Continued)", color=0x003399)
-                    field_count = 0
-                
-                name = f"{f.name} Flight: {f.departure} → {f.arrival}"
-                value = (
-                    f"💰 Price: ${f.price}\n"
-                    f"🛫 Departure: {f.departure}\n"
-                    f"🛬 Arrival: {f.arrival}"
-                )
-                
-                current_embed.add_field(
-                    name=name,
-                    value=value,
-                    inline=False
-                )
-                field_count += 1
-    
-    # Add the last embed if it has any fields
-    if field_count > 0:
-        embeds.append(current_embed)
-    
-    # If no flights found
-    if not embeds:
-        no_flights_embed = discord.Embed(title="Flight Search Results", color=0x003399)
-        no_flights_embed.add_field(
-            name="No Flights Found",
-            value="No flights found for this route.",
-            inline=False
-        )
-        embeds.append(no_flights_embed)
-    
-    return embeds
+    for f in flight_data:
+        if f.name == "Delta":
+            # Format the title to show route instead of just arrival
+            name = f"Delta Flight: {f.departure} → {f.arrival}"
+            
+            # Format the details in a cleaner way
+            value = (
+                f"💰 Price: ${f.price}\n"
+                f"🛫 Departure: {f.departure}\n"
+                f"🛬 Arrival: {f.arrival}"
+            )
+            
+            embed.add_field(
+                name=name,
+                value=value,
+                inline=False
+            )
+    return embed
 
-# Then modify your search_flights function:
 async def search_flights(message):
     try:
         parts = message.content.split()
         
-        # ... rest of the validation code ...
+        if len(parts) != 4:
+            usage = """
+Please provide all required information:
+
+!flights [from] [to] [date]
+
+Examples:
+- !flights SNA MAD 2025-04-02  (Santa Ana to Madrid)
+- !flights LAX CDG 2025-05-15  (Los Angeles to Paris)
+
+Parameters:
+[from] - Departure airport code (3 letters)
+[to]   - Arrival airport code (3 letters)
+[date] - Date in YYYY-MM-DD format
+"""
+            await message.channel.send(usage)
+            return
+
+        depart_airport = parts[1].upper()
+        arrive_airport = parts[2].upper()
+        depart_date = parts[3]
         
+        # Validate airport codes
+        if not (len(depart_airport) == 3 and len(arrive_airport) == 3):
+            await message.channel.send("Airport codes must be 3 letters (e.g., SNA, MAD)")
+            return
+            
+        # Validate date format
+        try:
+            datetime.strptime(depart_date, '%Y-%m-%d')
+        except ValueError:
+            await message.channel.send("Date must be in YYYY-MM-DD format (e.g., 2025-04-02)")
+            return
+        
+        # Let user know we're processing
         await message.channel.send("Searching for flights...")
         
+        # Get flights with user parameters
         result: Result = get_flights(
             flight_data=[
                 FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
@@ -79,9 +85,8 @@ async def search_flights(message):
             fetch_mode="fallback",
         )
         
-        embeds = check_flights(result.flights)
-        for embed in embeds:
-            await message.channel.send(embed=embed)
+        embed = deltaCheck(result.flights)
+        await message.channel.send(embed=embed)
         
     except Exception as e:
         await message.channel.send(f"An error occurred: {str(e)}")
@@ -177,9 +182,6 @@ async def on_message(message):
     if message.content.startswith('!flights'):
         await search_flights(message)
     
-    if message.content.startswith('!flights'):
-        await search_flights(message)
-    
     if message.content == 'eur flights':
         result: Result = get_flights(
             flight_data=[
@@ -190,7 +192,6 @@ async def on_message(message):
             passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
             fetch_mode="fallback",
         )
-        embeds = check_flights(result.flights)
-        for embed in embeds:
-            await message.channel.send(embed=embed)
+        embed = deltaCheck(result.flights)
+        await message.channel.send(embed=embed)
 client.run(token)
