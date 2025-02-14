@@ -11,27 +11,19 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-def create_flights_embed(flight_data):
-    embed = discord.Embed(title="Available Flights", color=0x003399)
+def deltaCheck(flight_data):
+    embed = discord.Embed(title="Delta Flights", color=0x003399)
     
-    # Group flights by airline for better organization
-    airlines = {}
     for f in flight_data:
-        if f.name not in airlines:
-            airlines[f.name] = []
-        airlines[f.name].append(f)
-    
-    # Add fields for each airline's flights
-    for airline, flights in airlines.items():
-        for flight in flights:
-            # Format the title to show airline and route
-            name = f"{airline} Flight: {flight.departure} → {flight.arrival}"
+        if f.name == "Delta":
+            # Format the title to show route instead of just arrival
+            name = f"Delta Flight: {f.departure} → {f.arrival}"
             
             # Format the details in a cleaner way
             value = (
-                f"💰 Price: {flight.price}\n"
-                f"🛫 Departure: {flight.departure}\n"
-                f"🛬 Arrival: {flight.arrival}"
+                f"💰 Price: {f.price}\n"
+                f"🛫 Departure: {f.departure}\n"
+                f"🛬 Arrival: {f.arrival}"
             )
             
             embed.add_field(
@@ -39,15 +31,6 @@ def create_flights_embed(flight_data):
                 value=value,
                 inline=False
             )
-    
-    # If no flights found, add a field indicating this
-    if not airlines:
-        embed.add_field(
-            name="No Flights Found",
-            value="No flights available for the specified route and date.",
-            inline=False
-        )
-    
     return embed
 
 async def search_flights(message):
@@ -102,7 +85,7 @@ Parameters:
             fetch_mode="fallback",
         )
         
-        embed = create_flights_embed(result.flights)
+        embed = deltaCheck(result.flights)
         await message.channel.send(embed=embed)
         
     except Exception as e:
@@ -209,7 +192,6 @@ async def on_message(message):
             passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
             fetch_mode="fallback",
         )
-        embed = create_flights_embed(result.flights)
+        embed = deltaCheck(result.flights)
         await message.channel.send(embed=embed)
-
 client.run(token)
