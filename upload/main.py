@@ -34,13 +34,13 @@ async def check_tweets():
             user = twitter_client.get_user(username=TWITTER_USERNAME).data
             tweets = twitter_client.get_users_tweets(
                 id=user.id,
-                since_id=last_tweet_id,
                 max_results=1,
                 tweet_fields=["created_at"]
             )
 
             if tweets.data:
-                for tweet in reversed(tweets.data):
+                tweet = tweets.data[0]
+                if tweet.id != last_tweet_id:
                     await channel.send(f"https://twitter.com/{TWITTER_USERNAME}/status/{tweet.id}")
                     last_tweet_id = tweet.id
 
