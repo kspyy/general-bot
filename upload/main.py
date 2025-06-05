@@ -47,7 +47,7 @@ async def check_tweets():
         except Exception as e:
             print(f"Error fetching tweets: {e}")
 
-        await asyncio.sleep(60)  # check every 60 seconds
+        await asyncio.sleep(180)  # check every 60 seconds
 
 # def deltaCheck(flight_data):
 #     embed = discord.Embed(title="Delta Flights", color=0x003399)
