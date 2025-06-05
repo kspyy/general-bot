@@ -34,7 +34,7 @@ async def check_tweets():
             user = twitter_client.get_user(username=TWITTER_USERNAME).data
             tweets = twitter_client.get_users_tweets(
                 id=user.id,
-                max_results=1,
+                max_results=5,
                 tweet_fields=["created_at"]
             )
 
