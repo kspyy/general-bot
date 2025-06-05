@@ -15,8 +15,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
-
-DISCORD_CHANNEL_ID = 697140290607382549
+DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 TWITTER_BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
 TWITTER_USERNAME = "elonmusk"
 
