@@ -24,30 +24,30 @@ twitter_client = tweepy.Client(bearer_token=TWITTER_BEARER_TOKEN)
 
 last_tweet_id = None
 
-async def check_tweets():
-    global last_tweet_id
-    await client.wait_until_ready()
-    channel = client.get_channel(DISCORD_CHANNEL_ID)
+# async def check_tweets():
+#     global last_tweet_id
+#     await client.wait_until_ready()
+#     channel = client.get_channel(DISCORD_CHANNEL_ID)
 
-    while not client.is_closed():
-        try:
-            user = twitter_client.get_user(username=TWITTER_USERNAME).data
-            tweets = twitter_client.get_users_tweets(
-                id=user.id,
-                max_results=5,
-                tweet_fields=["created_at"]
-            )
+#     while not client.is_closed():
+#         try:
+#             user = twitter_client.get_user(username=TWITTER_USERNAME).data
+#             tweets = twitter_client.get_users_tweets(
+#                 id=user.id,
+#                 max_results=5,
+#                 tweet_fields=["created_at"]
+#             )
 
-            if tweets.data:
-                tweet = tweets.data[0]
-                if tweet.id != last_tweet_id:
-                    await channel.send(f"https://twitter.com/{TWITTER_USERNAME}/status/{tweet.id}")
-                    last_tweet_id = tweet.id
+#             if tweets.data:
+#                 tweet = tweets.data[0]
+#                 if tweet.id != last_tweet_id:
+#                     await channel.send(f"https://twitter.com/{TWITTER_USERNAME}/status/{tweet.id}")
+#                     last_tweet_id = tweet.id
 
-        except Exception as e:
-            print(f"Error fetching tweets: {e}")
+#         except Exception as e:
+#             print(f"Error fetching tweets: {e}")
 
-        await asyncio.sleep(900)  # check every 60 seconds
+#         await asyncio.sleep(900)  # check every 60 seconds
 
 # def deltaCheck(flight_data):
 #     embed = discord.Embed(title="Delta Flights", color=0x003399)
