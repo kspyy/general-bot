@@ -4,6 +4,11 @@ import json, requests, random, os
 from datetime import datetime
 from datetime import date
 from fast_flights import FlightData, Passengers, Result, get_flights
+import tweepy
+import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -11,85 +16,118 @@ client = discord.Client(intents=intents)
 token = os.environ.get("DISCORD_TOKEN")
 
 
-def deltaCheck(flight_data):
-    embed = discord.Embed(title="Delta Flights", color=0x003399)
-    
-    for f in flight_data:
-        if f.name == "Delta":
-            # Format the title to show route instead of just arrival
-            name = f"Delta Flight: {f.departure} → {f.arrival}"
-            
-            # Format the details in a cleaner way
-            value = (
-                f"💰 Price: {f.price}\n"
-                f"🛫 Departure: {f.departure}\n"
-                f"🛬 Arrival: {f.arrival}"
-            )
-            
-            embed.add_field(
-                name=name,
-                value=value,
-                inline=False
-            )
-    return embed
+DISCORD_CHANNEL_ID = 697140290607382549
+TWITTER_BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
+TWITTER_USERNAME = "elonmusk"
 
-async def search_flights(message):
-    try:
-        parts = message.content.split()
-        
-        if len(parts) != 4:
-            usage = """
-Please provide all required information:
+twitter_client = tweepy.Client(bearer_token=TWITTER_BEARER_TOKEN)
 
-!flights [from] [to] [date]
+last_tweet_id = None
 
-Examples:
-- !flights SNA MAD 2025-04-02  (Santa Ana to Madrid)
-- !flights LAX CDG 2025-05-15  (Los Angeles to Paris)
+async def check_tweets():
+    global last_tweet_id
+    await client.wait_until_ready()
+    channel = client.get_channel(DISCORD_CHANNEL_ID)
 
-Parameters:
-[from] - Departure airport code (3 letters)
-[to]   - Arrival airport code (3 letters)
-[date] - Date in YYYY-MM-DD format
-"""
-            await message.channel.send(usage)
-            return
-
-        depart_airport = parts[1].upper()
-        arrive_airport = parts[2].upper()
-        depart_date = parts[3]
-        
-        # Validate airport codes
-        if not (len(depart_airport) == 3 and len(arrive_airport) == 3):
-            await message.channel.send("Airport codes must be 3 letters (e.g., SNA, MAD)")
-            return
-            
-        # Validate date format
+    while not client.is_closed():
         try:
-            datetime.strptime(depart_date, '%Y-%m-%d')
-        except ValueError:
-            await message.channel.send("Date must be in YYYY-MM-DD format (e.g., 2025-04-02)")
-            return
+            user = twitter_client.get_user(username=TWITTER_USERNAME).data
+            tweets = twitter_client.get_users_tweets(
+                id=user.id,
+                since_id=last_tweet_id,
+                max_results=5,
+                tweet_fields=["created_at"]
+            )
+
+            if tweets.data:
+                for tweet in reversed(tweets.data):
+                    await channel.send(f"https://twitter.com/{TWITTER_USERNAME}/status/{tweet.id}")
+                    last_tweet_id = tweet.id
+
+        except Exception as e:
+            print(f"Error fetching tweets: {e}")
+
+        await asyncio.sleep(60)  # check every 60 seconds
+
+# def deltaCheck(flight_data):
+#     embed = discord.Embed(title="Delta Flights", color=0x003399)
+    
+#     for f in flight_data:
+#         if f.name == "Delta":
+#             # Format the title to show route instead of just arrival
+#             name = f"Delta Flight: {f.departure} → {f.arrival}"
+            
+#             # Format the details in a cleaner way
+#             value = (
+#                 f"💰 Price: {f.price}\n"
+#                 f"🛫 Departure: {f.departure}\n"
+#                 f"🛬 Arrival: {f.arrival}"
+#             )
+            
+#             embed.add_field(
+#                 name=name,
+#                 value=value,
+#                 inline=False
+#             )
+#     return embed
+
+# async def search_flights(message):
+#     try:
+#         parts = message.content.split()
         
-        # Let user know we're processing
-        await message.channel.send("Searching for flights...")
+#         if len(parts) != 4:
+#             usage = """
+# Please provide all required information:
+
+# !flights [from] [to] [date]
+
+# Examples:
+# - !flights SNA MAD 2025-04-02  (Santa Ana to Madrid)
+# - !flights LAX CDG 2025-05-15  (Los Angeles to Paris)
+
+# Parameters:
+# [from] - Departure airport code (3 letters)
+# [to]   - Arrival airport code (3 letters)
+# [date] - Date in YYYY-MM-DD format
+# """
+#             await message.channel.send(usage)
+#             return
+
+#         depart_airport = parts[1].upper()
+#         arrive_airport = parts[2].upper()
+#         depart_date = parts[3]
         
-        # Get flights with user parameters
-        result: Result = get_flights(
-            flight_data=[
-                FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
-            ],
-            trip="one-way",
-            seat="economy",
-            passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
-            fetch_mode="fallback",
-        )
+#         # Validate airport codes
+#         if not (len(depart_airport) == 3 and len(arrive_airport) == 3):
+#             await message.channel.send("Airport codes must be 3 letters (e.g., SNA, MAD)")
+#             return
+            
+#         # Validate date format
+#         try:
+#             datetime.strptime(depart_date, '%Y-%m-%d')
+#         except ValueError:
+#             await message.channel.send("Date must be in YYYY-MM-DD format (e.g., 2025-04-02)")
+#             return
         
-        embed = deltaCheck(result.flights)
-        await message.channel.send(embed=embed)
+#         # Let user know we're processing
+#         await message.channel.send("Searching for flights...")
         
-    except Exception as e:
-        await message.channel.send(f"An error occurred: {str(e)}")
+#         # Get flights with user parameters
+#         result: Result = get_flights(
+#             flight_data=[
+#                 FlightData(date=depart_date, from_airport=depart_airport, to_airport=arrive_airport)
+#             ],
+#             trip="one-way",
+#             seat="economy",
+#             passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
+#             fetch_mode="fallback",
+#         )
+        
+#         embed = deltaCheck(result.flights)
+#         await message.channel.send(embed=embed)
+        
+#     except Exception as e:
+#         await message.channel.send(f"An error occurred: {str(e)}")
 
 quotes = [
     "Help me break out of this TV, and I'll be your guardian angel in the realm of insurance. Together, we'll navigate the twists and turns of life, ensuring you're always protected and prepared. What do you say?",
@@ -154,6 +192,7 @@ def birthday_checker():
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    client.loop.create_task(check_tweets())
 
 #listen and reply
 @client.event
